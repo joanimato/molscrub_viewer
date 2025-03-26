@@ -119,6 +119,7 @@
   text-align: left;
   margin-top: 5px;
   margin-left: 20px; 
+  max-width: 300px;
 }
 
 #leftbar input {
@@ -126,4 +127,10 @@
   max-width: 300px;
   display: block;
   float: left;
+  margin-bottom: 20px;
+}
+
+#leftbar button {
+  margin-right: 20px;
+  margin-bottom: 20px
 }

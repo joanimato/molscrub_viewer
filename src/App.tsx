@@ -96,7 +96,7 @@ function App() {
     <hr></hr>
     <PanelGroup direction='horizontal' className='main-panel'>
     
-    <Panel id="leftbar" minSize={10} maxSize={30} defaultSize={20} collapsible={true} collapsedSize={5}>
+    <Panel id="leftbar" minSize={10} maxSize={50} defaultSize={30} collapsible={true} collapsedSize={5}>
         Molscrub Options
         <br/> <br/>
         <MolscrubOptions formData={scrubOptions} onFormChange={handleFormChange}></MolscrubOptions>
