@@ -14,16 +14,30 @@ import { stringifyMolscrubOptions, MolscrubInputOptions } from './options'
 
 
 function App() {
-  const [userInput, setUserInput] = useState<MolscrubInputOptions>({smiles:"", pH:null}); // Track user input
+
+  let default_options: MolscrubInputOptions = {smiles:"", 
+    pH: null, 
+    write_failed:null,
+    name_from_prop:null, 
+    skip_acidbase:undefined, 
+    skip_tautomers: null, 
+    skip_ringfix: null, 
+    skip_gen3d:null
+  } 
+
+
+  // Define state of the prgram 
+  const [userInput, setUserInput] = useState<MolscrubInputOptions>(default_options); // Track user input
   const [output, setOutput] = useState<string>("")
   const [error, setError] = useState<string>("")
   const [refreshTrigger, setRefreshTrigger] = useState(0)
+  // const [scrubOptions, setScrubOptions] = useState<{ [key: string]: string }>({
+  //   pH: ""
+  // });
+  const [scrubOptions, setScrubOptions] = useState<MolscrubInputOptions>(default_options)
 
-  const [scrubOptions, setScrubOptions] = useState<{ [key: string]: string }>({
-    pH: ""
-  });
 
-  const handleFormChange = (field: string, value: string) => {
+  const handleFormChange = (field: string, value: string | boolean) => {
     // update scrub options 
     setScrubOptions((prevData) => ({
       ...prevData,
@@ -34,6 +48,12 @@ function App() {
       ...prevInput, 
       [field]: value
     }))
+
+    //debug
+    console.log(userInput)
+    console.log(scrubOptions)
+    console.log(stringifyMolscrubOptions(userInput))
+    console.log(userInput["smiles"])
   };
   
   
@@ -42,7 +62,7 @@ function App() {
       try {
         const response = await fetch("http://127.0.0.1:8000/check-file");
         const data = await response.json();
-        if (data.exists) return true; // ✅ File is ready
+        if (data.exists) return true; // File is ready
       } catch (err) {
         console.error("Error checking file:", err);
       }
@@ -51,6 +71,7 @@ function App() {
     return false; 
   };
 
+  // This makes request to the python server that runs molscrub
   const runPythonScript = async () => {
     try {
       let input = stringifyMolscrubOptions(userInput)
@@ -96,29 +117,27 @@ function App() {
     <hr></hr>
     <PanelGroup direction='horizontal' className='main-panel'>
     
-    <Panel id="leftbar" minSize={10} maxSize={50} defaultSize={30} collapsible={true} collapsedSize={5}>
+    <Panel id="leftbar" minSize={10} maxSize={35} defaultSize={30} collapsible={true} collapsedSize={5}>
         Molscrub Options
         <br/> <br/>
-        <MolscrubOptions formData={scrubOptions} onFormChange={handleFormChange}></MolscrubOptions>
         <br></br>
         <div className='scrub-option-form'>
-          <div className="normal-text"> Molscrub Console </div>
+          <div className="normal-text"> Molscrub Output </div>
           <div className='log-text'>
             {output && <pre>Output: {output}</pre>}
             {error && <pre style={{ color: "red" }}>{error}</pre>}
           </div>
         </div>
+        <br />
+        <MolscrubOptions formData={scrubOptions} onFormChange={handleFormChange}></MolscrubOptions>
     </Panel>
     <PanelResizeHandle  style={{color: "black"}}/>
     <Panel id="main" minSize={50}>
     <div className='container-main'> 
   
-
         <div className="card">
           <Jsme height="350px" width="400px" options="oldlook,star" onChange={handleDrawing} />
         </div>
-
-  
 
         <div className="card">
           <div className='smiles-entry'>

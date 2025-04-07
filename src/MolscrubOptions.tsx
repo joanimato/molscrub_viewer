@@ -1,11 +1,14 @@
 
+import { MolscrubInputOptions } from './options'
+
 interface TextBoxFormProps {
-    formData: { [key: string]: string };
-    onFormChange: (field: string, value: string) => void;
+    formData: MolscrubInputOptions;
+    onFormChange: (field: string, value: string | boolean) => void;
   }
   
   const MolscrubOptions: React.FC<TextBoxFormProps> = ({ formData, onFormChange }) => {
 
+    // download test.sdf file from temp directory that it is saved in
     const downloadFile = async (url: string, filename: string) => {
       try {
         const response = await fetch(url);
@@ -33,16 +36,88 @@ interface TextBoxFormProps {
     return (
       <form action="submit">
         <div className="scrub-option-form">
+          <details className="detail-form">
+            <summary> Basic options</summary>
+
+              <label>
+                pH:
+              </label>
+              <input
+                  type="text"
+                  title='pH value for acid/base transformations'
+                  value={formData.pH || ""}
+                  onChange={(e) => onFormChange("pH", e.target.value)}
+              />
+
+
             <label>
-              pH:
+              Writed Failed Mols:
             </label>
             <input
                 type="text"
-                value={formData.pH || ""}
-                onChange={(e) => onFormChange("pH", e.target.value)}
+                value={formData.write_failed || ""}
+                onChange={(e) => {onFormChange("write_failed", e.target.value)}}
             />
+            <label>
+              Name From Prop:
+            </label>
+            <input
+                type="text"
+                value={formData.name_from_prop || ""}
+                onChange={(e) => {onFormChange("name_from_prop", e.target.value)}}
+            />
+            <div className='checkbox-input'>
+              <label>
+                Skip Acid/Base:
+              </label>
+              <input 
+                  type="checkbox"
+                  checked={formData.skip_acidbase || false}
+                  onChange={(_) => {onFormChange("skip_acidbase", !formData.skip_acidbase)}}
+              />
+            </div>
+            <div className='checkbox-input'>
+              <label>
+                Skip Tautomers:
+              </label>
+              <input 
+                  type="checkbox"
+                  checked={formData.skip_tautomers || false}
+                  onChange={(_) => { onFormChange("skip_tautomers", !formData.skip_tautomers)}}
+              />
+            </div>
+            <div className='checkbox-input'>
+              <label>
+                Skip Ringfix:
+              </label>
+              <input 
+                  type="checkbox"
+                  checked={formData.skip_ringfix || false}
+                  onChange={(_) => { onFormChange("skip_ringfix", !formData.skip_ringfix)}}
+              />
+            </div>
+            <div className='checkbox-input'>
+              <label>
+                Skip Gen3d:
+              </label>
+              <input 
+                  type="checkbox"
+                  checked={formData.skip_gen3d || false}
+                  onChange={(_) => { onFormChange("skip_gen3d", !formData.skip_gen3d)}}
+              />
+            </div>
+          </details>
+          <br />
+          <details className="detail-form">
+          <summary> Misc Options</summary>
+          </details>
+
+          <br />
+          <details className="detail-form">
+          <summary> Advanced Options</summary>
+          </details>
+            <br></br>
             <label >
-              output:
             </label>
             <button onClick={handleDownload}>Download SDF</button>
         </div>
