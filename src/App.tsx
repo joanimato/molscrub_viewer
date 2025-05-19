@@ -22,7 +22,10 @@ function App() {
     skip_acidbase:undefined, 
     skip_tautomers: null, 
     skip_ringfix: null, 
-    skip_gen3d:null
+    skip_gen3d:null,
+    ring_energies:null,
+    cpu:null, 
+    debug: null
   } 
 
 
@@ -50,10 +53,8 @@ function App() {
     }))
 
     //debug
-    console.log(userInput)
-    console.log(scrubOptions)
     console.log(stringifyMolscrubOptions(userInput))
-    console.log(userInput["smiles"])
+
   };
   
   

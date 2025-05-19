@@ -106,10 +106,39 @@ interface TextBoxFormProps {
                   onChange={(_) => { onFormChange("skip_gen3d", !formData.skip_gen3d)}}
               />
             </div>
+            <div className='checkbox-input'>
+              <label>
+                Ring Energies:
+              </label>
+              <input 
+                  type="checkbox"
+                  checked={formData.ring_energies || false}
+                  onChange={(_) => { onFormChange("ring_energies", !formData.ring_energies)}}
+              />
+            </div>
           </details>
           <br />
           <details className="detail-form">
           <summary> Misc Options</summary>
+          <br></br>
+          <label>
+              CPUs:
+            </label>
+            <input
+                type="text"
+                value={formData.cpu || ""}
+                onChange={(e) => {onFormChange("cpu", e.target.value)}}
+            />
+            <div className='checkbox-input'>
+              <label>
+                Debug:
+              </label>
+              <input 
+                  type="checkbox"
+                  checked={formData.debug || false}
+                  onChange={(_) => { onFormChange("debug", !formData.debug)}}
+              />
+            </div>
           </details>
 
           <br />
@@ -119,6 +148,7 @@ interface TextBoxFormProps {
             <br></br>
             <label >
             </label>
+
             <button onClick={handleDownload}>Download SDF</button>
         </div>
         

@@ -23,12 +23,14 @@ class ScriptInput(BaseModel):
 
 @app.post("/run-script")
 def run_script(input: ScriptInput):
-    print(f"Scriptinput: {input.user_text}")
+    userInputList = input.user_text.split()
+    print(f"Scriptinput: {userInputList}")
     try:
         result = subprocess.run(
-            ["scrub.py", input.user_text, "-o", "test.sdf"], 
+            ["scrub.py", *userInputList], 
             capture_output=True, text=True)
         print(result.stdout)
+        print(result.stderr)
         return {"output": result.stdout, "error": result.stderr}
     except Exception as e:
         return {"error": str(e)}
